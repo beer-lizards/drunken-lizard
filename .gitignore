@@ -1,0 +1,16 @@
+# Sublime
+*.sublime-workspace
+
+# VSCode
+.vscode/
+typings/
+tsd.json
+
+# OSX
+.DS_Store
+
+# node.js
+node_modules/
+npm-debug.log
+webpack-assets.json
+
