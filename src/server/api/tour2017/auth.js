@@ -4,7 +4,7 @@ import md5 from 'md5';
 import request from 'request';
 import url from 'url';
 
-import config from '../config';
+import config from '../../config';
 
 const log = bunyan.createLogger({ name: 'lizard' });
 
@@ -13,7 +13,7 @@ const { host, port } = config.winkingLizard2017;
 
 router.route('/login')
   .post((req, res) => {
-    log.info('auth - login');
+    log.info('tour2017 - auth - login');
     const path = url.format({
       protocol: 'http',
       hostname: host,

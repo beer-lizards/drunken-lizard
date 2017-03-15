@@ -7,6 +7,7 @@ import AuthPage from './auth/AuthPage';
 import DashboardPage from './dashboard/DashboardPage';
 import EndpointPage from './endpoint/EndpointPage';
 import NotFoundPage from './notfound/NotFoundPage';
+import SignUpPage from './signup/SignUpPage';
 
 export default function createRoutes(getState) {
   const requireAuth = (nextState, replace) => {
@@ -28,6 +29,7 @@ export default function createRoutes(getState) {
       <Route component={DashboardPage} onEnter={requireAuth} path="dashboard" />
       <Route component={EndpointPage} onEnter={requireAuth} path="endpoint" />
       <Route component={AuthPage} path="login" />
+      <Route component={SignUpPage} path="signup" />
       <Route component={NotFoundPage} path="*" />
     </Route>
   );

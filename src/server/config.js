@@ -10,6 +10,13 @@ nconf.env('__');
 // Remember, never put production secrets in config. Use nconf.
 const config = {
   appName: metadata.name,
+  database: {
+    name: 'drunken_lizard',
+    host: 'localhost',
+    password: 'lizard',
+    port: 5432,
+    username: 'drunken',
+  },
   googleAnalyticsId: 'UA-XXXXXXX-X',
   isProduction,
   locales: ['en'],
