@@ -8,12 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
-import { fields } from '../../common/lib/redux-fields';
-import { focusInvalidField } from '../../common/lib/validation';
 import * as authActions from '../../common/auth/actions';
 
 const log = bunyan.createLogger({ name: 'lizard' });
-
 
 const styles = {
   paper: {
@@ -21,16 +18,14 @@ const styles = {
     display: 'inline-block',
     height: 100,
     margin: 'auto, 20',
-    textAlign: 'center',
     width: 400,
   },
 };
 
-class Login extends React.Component {
+class SignUp extends React.Component {
 
   static propTypes = {
     auth: React.PropTypes.object.isRequired,
-    fields: React.PropTypes.object.isRequired,
     location: React.PropTypes.object.isRequired,
     login: React.PropTypes.func.isRequired,
     msg: React.PropTypes.object.isRequired,
@@ -39,8 +34,6 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    // Read why we bind event handlers explicitly.
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
@@ -48,57 +41,48 @@ class Login extends React.Component {
     e.preventDefault();
     const { login, fields } = this.props;
     const result = await login(fields.$values());
-    log.info(`login result - ${result}`);
-    if (result.error) {
-      focusInvalidField(this, result.payload);
-      return;
-    }
-    this.redirectAfterLogin();
+    log.info(`signup result - ${result}`);
+    this.redirectAfterSignUp();
   }
 
   handleChange = (event, value) => this.setState({ [event.target.name]: value });
 
-  redirectAfterLogin() {
+  redirectAfterSignUp() {
     const { location, replace } = this.props;
     const nextPathname = location.state && (location.state.nextPathname || '/');
     replace(nextPathname);
   }
 
   render() {
-    const { auth, fields, msg } = this.props;
+    const { auth, msg } = this.props;
 
     return (
       <Paper style={styles.paper} zDepth={0}>
         <form onSubmit={this.onFormSubmit} disabled={auth.formDisabled}>
           <Card>
-            <CardTitle title="Login" />
+            <CardTitle title={msg.title} />
             <CardText>
               <TextField
-                floatingLabelText="Email"
+                floatingLabelText={msg.labels.email}
                 fullWidth
-                hintText={msg.placeholder.email}
-                name="email"
+                hintText={msg.placeholders.email}
                 onChange={this.handleChange}
                 type="email"
-                {...fields.email}
               />
 
               <TextField
-                floatingLabelText="Password"
+                floatingLabelText={msg.labels.password}
                 fullWidth
-                hintText={msg.placeholder.password}
-                name="password"
+                hintText={msg.placeholders.password}
                 onChange={this.handleChange}
                 type="password"
-                {...fields.password}
               />
             </CardText>
             <CardActions>
               <RaisedButton
-                label={msg.button.login}
+                label={msg.buttons.register}
                 type="submit"
               />
-              <RaisedButton label="Forgot Password" />
             </CardActions>
           </Card>
         </form>
@@ -108,12 +92,7 @@ class Login extends React.Component {
 
 }
 
-const login = fields(Login, {
-  path: 'auth',
-  fields: ['email', 'password'],
-});
-
 export default connect(state => ({
   auth: state.auth,
-  msg: state.intl.msg.auth.form,
-}), { ...authActions, replace })(login);
+  msg: state.intl.msg.signup,
+}), { ...authActions, replace })(SignUp);
