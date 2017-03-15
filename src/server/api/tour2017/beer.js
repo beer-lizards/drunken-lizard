@@ -3,16 +3,16 @@ import express from 'express';
 import request from 'request';
 import url from 'url';
 
-import config from '../config';
+import config from '../../config';
 
 const log = bunyan.createLogger({ name: 'lizard' });
 
 const router = express.Router();
 const { host, port, softwareId } = config.winkingLizard2017;
 
-router.route('/login')
+router.route('/sync')
   .post((req, res) => {
-    log.info('auth - login');
+    log.info('tour2017 - beer - sync');
     const path = url.format({
       protocol: 'http',
       hostname: host,

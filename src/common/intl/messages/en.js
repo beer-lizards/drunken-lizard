@@ -66,4 +66,18 @@ export default {
   settings: {
     title: 'Settings',
   },
+  signup: {
+    buttons: {
+      register: 'Register',
+    },
+    labels: {
+      email: 'Email',
+      password: 'Password',
+    },
+    placeholders: {
+      email: 'email',
+      password: 'eassword',
+    },
+    title: 'SignUp',
+  },
 };

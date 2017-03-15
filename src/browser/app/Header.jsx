@@ -8,6 +8,7 @@ const Header = ({ dispatch, title }) => (
   <AppBar
     title={title}
     onLeftIconButtonTouchTap={() => dispatch(openDrawer())}
+    iconClassNameRight="muidocs-icon-navigation-expand-more"
   />
 );
 

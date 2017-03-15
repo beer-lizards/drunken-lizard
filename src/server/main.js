@@ -10,7 +10,7 @@ const log = bunyan.createLogger({ name: 'lizard' });
 
 const { port } = config;
 
-app.use('/api/v1', api);
+app.use('/api', api);
 app.use(frontend);
 app.use(errorHandler);
 
