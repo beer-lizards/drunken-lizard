@@ -1,11 +1,11 @@
 import express from 'express';
 
-import auth from './auth';
-import beer from './beer';
+import beers from './beers';
+import sessions from './sessions';
 
 const router = express.Router();
 
-router.use('/auth', auth);
-router.use('/beer', beer);
+router.use('/beers', beers);
+router.use('/sessions', sessions);
 
 export default router;
