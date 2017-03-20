@@ -6,10 +6,15 @@ const log = bunyan.createLogger({ name: 'lizard' });
 
 const router = express.Router();
 
+/**
+ * Get beer from database
+ */
 router.route('/')
   .post((req, res) => {
     log.info('app - beer - list');
-    // Get beer from database
+    return new Promise((resolve, reject) => {
+
+    });
   });
 
 export default router;
