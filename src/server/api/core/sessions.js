@@ -8,8 +8,8 @@ const router = express.Router();
 
 const createSession = (req, res) => {
   log.info('core - session - POST');
-  const db = req.app.get('db');
   return new Promise((resolve, reject) => {
+    const db = req.app.get('db');
     db.drunken_lizard.user_account.find({}, (err, users) => {
       if (err) {
         return reject(err);
