@@ -1,9 +1,9 @@
 import express from 'express';
 
-import auth from './auth';
+import sessions from './sessions';
 
 const router = express.Router();
 
-router.use('/auth', auth);
+router.use('/sessions', sessions);
 
 export default router;
