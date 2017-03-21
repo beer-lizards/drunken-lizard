@@ -1,5 +1,5 @@
 import URI from 'urijs';
-import isomorphicFetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch';
 
 function ensureServerUrl(serverUrl, input) {
   if (typeof input !== 'string') return input;
@@ -11,6 +11,6 @@ function ensureServerUrl(serverUrl, input) {
 export default function createFetch(serverUrl) {
   return (input, init) => {
     const verifiedInput = ensureServerUrl(serverUrl, input);
-    return isomorphicFetch(verifiedInput, init);
+    return fetch(verifiedInput, init);
   };
 }

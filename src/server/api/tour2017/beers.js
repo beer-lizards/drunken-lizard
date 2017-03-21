@@ -37,12 +37,44 @@ const fetchApiCredentialPromise = ({
   });
 };
 
+const fetchBeers = ({
+  db,
+  tourYear,
+  userId,
+}) => {
+  log.info('tour2017 - fetchBeers - start');
+  return new Promise((resolve, reject) => {
+    db.run('select b.beer_id as "beerId", b.name, b.description, '
+      + '  case coalesce(cb.beer_id, -1) when -1 then false '
+      + '    else true '
+      + 'end as consumed '
+      + 'from drunken_lizard.beer b left outer join drunken_lizard.consumed_beer cb '
+      + 'on b.beer_id = cb.beer_id '
+      + 'where (cb.user_account_id = $1 or cb.user_account_id is null) '
+      + 'and b.tour_year = $2', [userId, tourYear], (err, results) => {
+        if (err) {
+          log.info('tour2017 - fetchBeers - error');
+          return reject(err);
+        }
+        log.info(`tour2017 - fetchBeers - success(${results.length})`);
+        return resolve(results);
+      });
+  });
+};
+
+const fetchBeersConsumed = ({
+  db,
+  tourYear,
+}) => {
+
+};
+
 /**
  * Fetches the beers for a tour.
  *
  * return A set of tour beer id's.
  */
-const fetchBeersPromise = ({
+const fetchBeerIdsPromise = ({
   db,
   tourYear,
 }) => {
@@ -248,7 +280,7 @@ const storeBeersPromise = ({
   userId,
 }) => {
   log.info('tour2017 - storeBeersPromise - start');
-  return fetchBeersPromise({
+  return fetchBeerIdsPromise({
     db,
     tourYear: 2017,
     userId,
@@ -321,11 +353,31 @@ const storeBeersPromise = ({
 };
 
 /**
+ *
+ */
+const listBeers = (req, res) => {
+  log.info('tour2017 - listBeers - start');
+  fetchBeers({
+    db: req.app.get('db'),
+    tourYear: 2017,
+    userId: req.params.id,
+  })
+  .then((beers) => {
+    log.info('tour2017 - listBeers - success');
+    res.json(beers);
+  })
+  .catch((err) => {
+    log.info('tour2017 - listBeers - err');
+    res.status(400).json(err);
+  });
+};
+
+/**
  * Synchronize beers with wiking lizard 2017 webapp and local database.
  */
 const synchBeers = (req, res) => {
   log.info('tour2017 - synchBeers - start');
-  return fetchApiCredentialPromise({
+  fetchApiCredentialPromise({
     id: req.params.id,
     db: req.app.get('db'),
   })
@@ -338,7 +390,8 @@ const synchBeers = (req, res) => {
   .then((updated) => {
     log.info('tour2017 - synchBeers - success');
     res.json(updated);
-  }).catch((err) => {
+  })
+  .catch((err) => {
     log.info('tour2017 - synchBeers - err');
     res.status(400).json(err);
   });
@@ -350,6 +403,7 @@ router.route('/:id')
     log.trace('verify - jwt');
     next();
   })
-  .get(synchBeers);
+  .get(listBeers)
+  .patch(synchBeers);
 
 export default router;

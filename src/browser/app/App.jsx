@@ -52,7 +52,6 @@ class App extends React.Component {
             { rel: 'shortcut icon', href: require('./favicon.ico') },
             { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
             { rel: 'stylesheet', href: '/libs/c3/c3.min.css' },
-            { rel: 'stylesheet', href: '/libs/main.css' },
           ]}
           meta={[{
             name: 'description',
