@@ -4,6 +4,7 @@ import { routerReducer as routing } from 'react-router-redux';
 import app from './app/reducer';
 import auth from './auth/reducer';
 import authorization from './authorization/reducer';
+import beers from './beers/reducer';
 import config from './config/reducer';
 import device from './device/reducer';
 import endpoints from './endpoints/reducer';
@@ -37,6 +38,7 @@ const configureReducer = (initialState) => {
     app,
     auth,
     authorization,
+    beers,
     config,
     device,
     endpoints,

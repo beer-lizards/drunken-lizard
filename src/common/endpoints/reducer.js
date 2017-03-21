@@ -33,7 +33,7 @@ export default function endpointsReducer(state = initialState, action) {
       return state.set('selected', endpointIds);
     }
     case actions.ENDPOINTS_DELETE_REQUESTED: {
-
+      break;
     }
     default: {
       return state;
