@@ -13,10 +13,10 @@ class DrawerWrapper extends Component {
     dispatch: PropTypes.func.isRequired,
     drawerOpen: PropTypes.bool.isRequired,
     links: PropTypes.shape({
-      dashboard: PropTypes.string.isRequired,
-      endpoint: PropTypes.string.isRequired,
-      home: PropTypes.string.isRequired,
-      login: PropTypes.string.isRequired,
+      beer: PropTypes.string.isRequired,
+      friends: PropTypes.string.isRequired,
+      overview: PropTypes.string.isRequired,
+      settings: PropTypes.string.isRequired,
     }).isRequired,
     title: PropTypes.string.isRequired,
     viewer: PropTypes.object,
@@ -46,28 +46,20 @@ class DrawerWrapper extends Component {
         docked={false}
       >
         <MenuItem
-          leftIcon={
-            <FontIcon
-              className="material-icons"
-              style={{ color: '#559' }}
-            >
-              assessment
-            </FontIcon>
-          }
-          onTouchTap={() => browserHistory.push('/dashboard')}
-          primaryText="Dashboard"
+          onTouchTap={() => browserHistory.push('/')}
+          primaryText={links.overview}
         />
         <MenuItem
-          leftIcon={
-            <FontIcon
-              className="material-icons"
-              style={{ color: '#559' }}
-            >
-              devices
-            </FontIcon>
-          }
-          onTouchTap={() => browserHistory.push('/endpoint')}
-          primaryText="Endpoints"
+          onTouchTap={() => browserHistory.push('/beer')}
+          primaryText={links.beer}
+        />
+        <MenuItem
+          onTouchTap={() => browserHistory.push('/friends')}
+          primaryText={links.friends}
+        />
+        <MenuItem
+          onTouchTap={() => browserHistory.push('/settings')}
+          primaryText={links.settings}
         />
       </Drawer>
     );
