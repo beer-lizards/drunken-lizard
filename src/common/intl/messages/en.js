@@ -1,16 +1,18 @@
 export default {
   app: {
+    description: 'Drink virtual beer with your friends.',
     footer: {
       name: 'Labetu Software',
-      madeBy: 'Hand crafted by the engineers at Drinking Lizards',
+      madeBy: 'Hand crafted by the engineers at Drinking Lizards.',
     },
     links: {
-      dashboard: 'Dashboard',
-      endpoint: 'Endpoints',
-      home: 'Home',
-      login: 'Login',
+      beer: 'Beer',
+      friends: 'Friends',
+      overview: 'Overview',
+      settings: 'Settings',
     },
     title: 'Lizards with Friends',
+    titleTemplate: '%s - Lizards with Friends',
   },
   auth: {
     form: {
@@ -41,6 +43,11 @@ export default {
         other {'{prop}'}
       }.`,
     },
+  },
+  beer: {
+    header: 'Beer',
+    subtext: 'Your beer history.',
+    title: 'Beer History',
   },
   dashboard: {
     title: 'Dashboard',
