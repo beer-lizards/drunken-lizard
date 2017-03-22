@@ -27,6 +27,7 @@ const Footer = ({ msg, viewer }) => (
     <FullWidthSection style={styles.section}>
       <p style={styles.p}>
         {msg.madeBy}
+        <br />
         <a
           href="http://www.drinkinglizards.com"
           style={styles.a}
