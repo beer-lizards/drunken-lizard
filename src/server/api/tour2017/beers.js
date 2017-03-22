@@ -1,31 +1,27 @@
 import bunyan from 'bunyan';
-import crypto from 'crypto';
 import express from 'express';
 import Promise from 'bluebird';
 import moment from 'moment';
-import request from 'request';
-import url from 'url';
 
-import config from '../../config';
+import * as tour2017Client from '../common/tour2017Client';
 
 const log = bunyan.createLogger({ name: 'lizard' });
 
 const router = express.Router();
-const { host, port, softwareId } = config.winkingLizard2017;
 
 /**
  * Fetches the api credentials to use when authenticating with the winking
  * lizard api.
  */
 const fetchApiCredentialPromise = ({
-  id,
   db,
+  userId,
 }) => {
   log.info('tour2017 - fetchApiCredentialPromise - start');
   return new Promise((resolve, reject) => {
     db.drunken_lizard.winking_lizard.findOne({
       tour_year: 2017,
-      user_account_id: id,
+      user_account_id: userId,
     }, (err, credential) => {
       if (err || !credential) {
         log.info('tour2017 - fetchApiCredentialPromise - error');
@@ -129,55 +125,6 @@ const fetchBeersConsumedPromise = ({
 };
 
 /**
- * Fetch the current beer list and consumed beers from the api.
- */
-const fetchBeerFromApiPromise = (credentials) => {
-  log.info('tour2017 - fetchBeerFromApiPromise - start');
-  return new Promise((resolve, reject) => {
-    const {
-      email,
-      password,
-    } = credentials;
-
-    // Verify credential.
-    const hash = crypto.createHash('md5');
-    hash.update(`${password}`);
-
-    const path = url.format({
-      protocol: 'http',
-      hostname: host,
-      port,
-      pathname: '_110/VIGuestSignUp/CFGet/VIGuestAccounts.cfc',
-      query: {
-        method: 'VIGItemHistory',
-        UserID: email,
-        Password: hash.digest('hex'),
-        SoftwareID: softwareId,
-        StoreSerial: 80216,
-        StoreID: 5420,
-      },
-    });
-
-    const opts = {
-      method: 'GET',
-      url: path,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    request(opts, (err, response, body) => {
-      if (err || response.statusCode < 200 || response.statusCode > 300) {
-        log.info('tour2017 - fetchBeerFromApiPromise - err');
-        return reject(err);
-      }
-      log.info('tour2017 - fetchBeerFromApiPromise - success');
-      return resolve(JSON.parse(body));
-    });
-  });
-};
-
-/**
  * Inserts all the beers.
  */
 const saveBeersPromise = ({
@@ -187,10 +134,13 @@ const saveBeersPromise = ({
   log.info('tour2017 - saveBeersPromise - start');
   return new Promise((resolve) => {
     const beerInsertionPromises = beers.map((beer) => {
+      const tourNumber = Number.isInteger(beer.ItemName.substring(0, 3)) ?
+        beer.ItemName.substring(0, 3) : -1;
       return new Promise((resolve, reject) => {
         db.drunken_lizard.beer.save({
           description: beer.ItemDesc,
           name: beer.ItemName,
+          tour_beer_number: tourNumber,
           tour_data: beer,
           tour_description: beer.ItemDesc,
           tour_item_id: beer.ItemID,
@@ -202,9 +152,9 @@ const saveBeersPromise = ({
         }, (err, inserted) => {
           if (err) {
             log.info('tour2017 - saveBeersPromise - error');
-            reject(err);
+            return reject(err);
           }
-          resolve({
+          return resolve({
             beerId: inserted.beer_id,
             itemId: inserted.tour_item_id,
           });
@@ -225,7 +175,7 @@ const saveBeersPromise = ({
 };
 
 /**
- *
+ * Saves any new consumed beers.
  */
 const saveConsumedBeersPromise = ({
   beers,
@@ -251,9 +201,9 @@ const saveConsumedBeersPromise = ({
       }, (err, inserted) => {
         if (err) {
           log.info('tour2017 - saveConsumedBeersPromise - error');
-          reject(err);
+          return reject(err);
         }
-        resolve({
+        return resolve({
           consumedBeerId: inserted.consumed_beer_id,
         });
       });
@@ -352,6 +302,23 @@ const storeBeersPromise = ({
   });
 };
 
+const cardHistory = (req, res) => {
+  log.info('tour2017 - cardHistory - start');
+  fetchApiCredentialPromise({
+    db: req.app.get('db'),
+    userId: req.params.userId,
+  })
+  .then(credentials => tour2017Client.fetchCardHistory(credentials))
+  .then((beers) => {
+    log.info('tour2017 - cardHistory - success');
+    res.json(beers);
+  })
+  .catch((err) => {
+    log.info('tour2017 - cardHistory - err');
+    res.status(400).json(err);
+  });
+};
+
 /**
  *
  */
@@ -360,7 +327,7 @@ const listBeers = (req, res) => {
   fetchBeers({
     db: req.app.get('db'),
     tourYear: 2017,
-    userId: req.params.id,
+    userId: req.params.userId,
   })
   .then((beers) => {
     log.info('tour2017 - listBeers - success');
@@ -378,14 +345,14 @@ const listBeers = (req, res) => {
 const synchBeers = (req, res) => {
   log.info('tour2017 - synchBeers - start');
   fetchApiCredentialPromise({
-    id: req.params.id,
     db: req.app.get('db'),
+    userId: req.params.userId,
   })
-  .then(credentials => fetchBeerFromApiPromise(credentials))
+  .then(credentials => tour2017Client.fetchBeerHistory(credentials))
   .then(beers => storeBeersPromise({
     beers,
     db: req.app.get('db'),
-    userId: req.params.id,
+    userId: req.params.userId,
   }))
   .then((updated) => {
     log.info('tour2017 - synchBeers - success');
@@ -397,13 +364,29 @@ const synchBeers = (req, res) => {
   });
 };
 
-router.route('/:id')
+router.route('/:userId/card')
   .all((req, res, next) => {
     // Verify authorization.
     log.trace('verify - jwt');
     next();
   })
-  .get(listBeers)
+  .get(cardHistory);
+
+router.route('/:userId')
+  .all((req, res, next) => {
+    // Verify authorization.
+    log.trace('verify - jwt');
+    next();
+  })
+  .get(listBeers);
+
+router.route('/sync/:userId')
+  .all((req, res, next) => {
+    // Verify authorization.
+    log.trace('verify - jwt');
+    next();
+  })
   .patch(synchBeers);
+
 
 export default router;
