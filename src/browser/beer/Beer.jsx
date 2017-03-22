@@ -11,7 +11,7 @@ const Beer = ({ beer, ...otherProps }) => (
     {otherProps.children[0]}
     <TableRowColumn>{beer.name}</TableRowColumn>
     <TableRowColumn>{beer.description}</TableRowColumn>
-    <TableRowColumn>{(beer.consumed) ? 'true' : 'false'}</TableRowColumn>
+    <TableRowColumn>{(beer.consumed) ? 'Yes' : 'No'}</TableRowColumn>
   </TableRow>
 );
 

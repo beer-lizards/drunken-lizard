@@ -6,6 +6,7 @@ const log = bunyan.createLogger({ name: 'lizard' });
 
 const initialState = {
   beers: [],
+  showAll: true,
 };
 
 export default function endpointsReducer(state = initialState, action) {
@@ -21,6 +22,12 @@ export default function endpointsReducer(state = initialState, action) {
       return {
         ...state,
         beers: [],
+      };
+    }
+    case actions.TOGGLE_SHOW_ALL: {
+      return {
+        ...state,
+        showAll: action.payload.checked,
       };
     }
     default: {

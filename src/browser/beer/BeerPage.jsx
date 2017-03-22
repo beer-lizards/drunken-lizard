@@ -4,24 +4,34 @@ import { connect } from 'react-redux';
 
 import Beers from './Beers';
 import fetch from '../../common/components/fetch';
-import {
-  fetchBeers,
-} from '../../common/beers/actions';
+import { fetchBeers, toggleShowAll } from '../../common/beers/actions';
 
-const BeerPage = ({ ...otherProps }) => (
-  <div className="mdl-grid">
-    <Helmet title="Beers" />
+const BeerPage = ({ msg, ...otherProps }) => (
+  <div>
+    <Helmet title={msg.beer.title} />
     <Beers {...otherProps} />
   </div>
 );
 
 BeerPage.propTypes = {
+  msg: PropTypes.shape({
+    beer: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   token: PropTypes.string.isRequired,
 };
 
-const beerPage = fetch(fetchBeers)(BeerPage);
+const fetchedBeerPage = fetch(fetchBeers)(BeerPage);
 
 export default connect(state => ({
-  beers: state.beers.beers,
+  beers: state.beers,
+  msg: {
+    beer: state.intl.msg.beer,
+  },
   token: state.authorization.authorization.token,
-}))(beerPage);
+}), dispatch => ({
+  onToggleShowAll: (checked) => {
+    dispatch(toggleShowAll(checked));
+  },
+}))(fetchedBeerPage);
