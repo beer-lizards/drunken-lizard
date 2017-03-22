@@ -8,9 +8,11 @@ import {
  } from 'material-ui/Table';
 import {
    Card,
+   CardActions,
    CardHeader,
    CardText,
 } from 'material-ui/Card';
+import Toggle from 'material-ui/Toggle';
 import Paper from 'material-ui/Paper';
 import { grey200 } from 'material-ui/styles/colors';
 
@@ -19,18 +21,27 @@ import Beer from './Beer';
 class Beers extends React.Component {
 
   static propTypes = {
-    beers: PropTypes.arrayOf(
-      PropTypes.shape({
-        beerId: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        consumed: PropTypes.bool.isRequired,
-      }),
-    ).isRequired,
+    beers: PropTypes.shape({
+      beers: PropTypes.arrayOf(
+        PropTypes.shape({
+          beerId: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          consumed: PropTypes.bool.isRequired,
+        }),
+      ).isRequired,
+      showAll: PropTypes.bool.isRequired,
+    }).isRequired,
+    onToggleShowAll: PropTypes.func.isRequired,
+  }
+
+  toggleShowAll(event, checked) {
+    const { onToggleShowAll } = this.props;
+    onToggleShowAll(checked);
   }
 
   render() {
-    const { beers } = this.props;
+    const { beers, showAll } = this.props.beers;
 
     if (!beers.length) {
       return (
@@ -60,6 +71,15 @@ class Beers extends React.Component {
         />
         <CardText style={{ paddingTop: '0px' }}>
           <Paper zDepth={1}>
+            <CardActions style={{ textAlign: 'right' }}>
+              <Toggle
+                label="Show All"
+                onToggle={
+                  (event, checked) => this.toggleShowAll(event, checked)
+                }
+                toggled={showAll}
+              />
+            </CardActions>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -71,12 +91,14 @@ class Beers extends React.Component {
               <TableBody
                 showRowHover
               >
-                {beers.map(beer => (
-                  <Beer
-                    key={beer.beerId}
-                    beer={beer}
-                  />
-                ))}
+                {beers.filter(beer => (showAll) ? true : beer.consumed)
+                  .map(beer => (
+                    <Beer
+                      key={beer.beerId}
+                      beer={beer}
+                    />
+                  ))
+                }
               </TableBody>
             </Table>
           </Paper>
