@@ -27,6 +27,12 @@ class App extends React.Component {
       React.PropTypes.node,
     ]).isRequired,
     dispatch: PropTypes.func.isRequired,
+    msg: PropTypes.shape({
+      app: PropTypes.shape({
+        description: PropTypes.string.isRequired,
+        titleTemplate: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   };
 
   componentWillMount() {
@@ -43,7 +49,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, msg } = this.props;
 
     return (
       <div>
@@ -55,13 +61,13 @@ class App extends React.Component {
           ]}
           meta={[{
             name: 'description',
-            content: 'Drink virtual beer with your friends.',
+            content: msg.app.description,
           }]}
           script={[
             { src: '/libs/c3/c3.min.js', type: 'text/javascript' },
             { src: '/libs/d3/d3.min.js', type: 'text/javascript' },
           ]}
-          titleTemplate="%s - Lizards with Friends"
+          titleTemplate={msg.app.titleTemplate}
         />
         <Header />
         <Drawer />
@@ -76,4 +82,8 @@ class App extends React.Component {
 }
 
 // Just inject dispatch.
-export default connect()(withWidth()(App));
+export default connect(state => ({
+  msg: {
+    app: state.intl.msg.app,
+  },
+}))(withWidth()(App));
