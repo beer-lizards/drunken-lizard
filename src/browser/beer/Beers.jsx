@@ -11,7 +11,7 @@ import Beer from './Beer';
 class Beers extends React.Component {
 
   static propTypes = {
-    beers: PropTypes.shape({
+    beer: PropTypes.shape({
       beers: PropTypes.arrayOf(
         PropTypes.shape({
           beerId: PropTypes.string.isRequired,
@@ -23,15 +23,33 @@ class Beers extends React.Component {
       showAll: PropTypes.bool.isRequired,
     }).isRequired,
     onToggleShowAll: PropTypes.func.isRequired,
+    onNextPage: PropTypes.func.isRequired,
+    onPreviousPage: PropTypes.func.isRequired,
+    onRefresh: PropTypes.func.isRequired,
   }
 
-  toggleShowAll(event, checked) {
+  onNext() {
+    const { onNextPage } = this.props;
+    onNextPage();
+  }
+
+  onPrevious() {
+    const { onPreviousPage } = this.props;
+    onPreviousPage();
+  }
+
+  onRefresh() {
+    const { onRefresh } = this.props;
+    onRefresh();
+  }
+
+  onToggleShowAll(event, checked) {
     const { onToggleShowAll } = this.props;
     onToggleShowAll(checked);
   }
 
   render() {
-    const { beers, showAll } = this.props.beers;
+    const { beers, showAll } = this.props.beer;
 
     const page = 0;
     const total = 0;
@@ -41,7 +59,6 @@ class Beers extends React.Component {
         <Card
           style={{
             backgroundColor: `${grey200}`,
-            minHeight: '600px',
           }}
           zDepth={0}
         />
@@ -52,7 +69,6 @@ class Beers extends React.Component {
       <Card
         style={{
           backgroundColor: `${grey200}`,
-          minHeight: '600px',
         }}
         zDepth={0}
       >
@@ -68,7 +84,7 @@ class Beers extends React.Component {
               <Toggle
                 label="Show All"
                 onToggle={
-                  (event, checked) => this.toggleShowAll(event, checked)
+                  (event, checked) => this.onToggleShowAll(event, checked)
                 }
                 toggled={showAll}
               />

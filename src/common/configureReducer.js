@@ -4,10 +4,9 @@ import { routerReducer as routing } from 'react-router-redux';
 import app from './app/reducer';
 import auth from './auth/reducer';
 import authorization from './authorization/reducer';
-import beers from './beers/reducer';
+import beer from './beer/reducer';
 import config from './config/reducer';
 import device from './device/reducer';
-import endpoints from './endpoints/reducer';
 import intl from './intl/reducer';
 import ui from './ui/reducer';
 import users from './users/reducer';
@@ -29,7 +28,7 @@ const resetStateOnSignOutReducer = (reducer, initialState) => (
     // app: state.app,
     config: initialState.config,
     // device: initialState.device,
-    // intl: initialState.intl,
+    intl: initialState.intl,
   }, action);
 };
 
@@ -38,10 +37,9 @@ const configureReducer = (initialState) => {
     app,
     auth,
     authorization,
-    beers,
+    beer,
     config,
     device,
-    endpoints,
     intl,
     reduxFields,
     routing,

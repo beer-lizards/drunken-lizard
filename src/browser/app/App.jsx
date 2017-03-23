@@ -15,7 +15,6 @@ import {
 const styles = {
   div: {
     backgroundColor: `${grey200}`,
-    minHeight: '800px',
   },
 };
 
