@@ -80,7 +80,6 @@
     "moment": "^2.17.1",
     "moment-timezone": "^0.5.11",
     "nconf": "^0.8.1",
-    "node-sass": "^4.1.1",
     "nodemon": "^1.8.1",
     "normalize.css": "^5.0.0",
     "postcss-loader": "^1.2.1",
