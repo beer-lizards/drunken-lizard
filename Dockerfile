@@ -1,7 +1,6 @@
-# https://github.com/mhart/alpine-node
-FROM mhart/alpine-node:5.5.0
+FROM mhart/alpine-node:7.7.0
 
-ENV DIR=/opt/lizards-with-friends PORT=8000 NODE_ENV=production
+ENV DIR=/opt/drunken-slizards PORT=8000 NODE_ENV=production
 
 COPY package.json ${DIR}/
 
@@ -19,7 +18,7 @@ WORKDIR $DIR
 
 RUN npm run build -- -p
 
-EXPOSE $PORT
+EXPOSE 8000
 
 ENTRYPOINT ["npm"]
 

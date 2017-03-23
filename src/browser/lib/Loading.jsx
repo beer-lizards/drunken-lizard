@@ -1,13 +1,3 @@
-// Text loading component with two important limits.
-// https://www.nngroup.com/articles/response-times-3-important-limits
-// Example:
-// {!users ?
-//   <Loading />
-// :
-//   <div>
-//     users here
-//   </div>
-// }
 import React, { Component, PropTypes } from 'react';
 
 export default class Loading extends Component {
