@@ -5,7 +5,7 @@ import path from 'path';
 import webpack from 'webpack';
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 
-import constants from './constants';
+import * as constants from './constants';
 import webpackIsomorphicAssets from './assets';
 
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIsomorphicAssets);
@@ -15,30 +15,9 @@ const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIso
 // http://webpack.github.io/docs/configuration.html#devtool
 const devtools = 'cheap-module-eval-source-map';
 
-const loaders = {
-  css: '',
-  less: '!less-loader',
-  scss: '!sass-loader',
-  sass: '!sass-loader?indentedSyntax',
-};
-
 const serverIp = ip.address();
 
 export default function makeConfig(isDevelopment) {
-  function stylesLoaders() {
-    return Object.keys(loaders).map((ext) => {
-      const prefix = 'css-loader!postcss-loader';
-      const extLoaders = prefix + loaders[ext];
-      const loader = isDevelopment
-        ? `style-loader!${extLoaders}`
-        : ExtractTextPlugin.extract('style-loader', extLoaders);
-      return {
-        loader,
-        test: new RegExp(`\\.(${ext})$`),
-      };
-    });
-  }
-
   const config = {
     hotPort: constants.HOT_RELOAD_PORT,
     cache: isDevelopment,
@@ -82,7 +61,7 @@ export default function makeConfig(isDevelopment) {
             },
           },
         },
-      ].concat(stylesLoaders()),
+      ],
     },
     node: {
       net: 'empty',
