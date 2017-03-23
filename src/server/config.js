@@ -25,6 +25,7 @@ const config = {
     host: 'signin.viguest.com',
     port: 80,
     softwareId: 'bHeBWRKW7POR93PNxdfmx8SCNuTFz2aq',
+    vigId: 94840,
   },
 };
 
