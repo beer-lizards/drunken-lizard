@@ -11,7 +11,7 @@ import { grey200 } from 'material-ui/styles/colors';
 
 import Header from '../app/Header';
 
-const LoadingPage = ({ store, msg }) => (
+const LoadingPage = ({ msg, store }) => (
   <Paper style={{ backgroundColor: `${grey200}` }} zDepth={0}>
     <Helmet title={msg.title} />
     <Header store={store} />
@@ -32,6 +32,7 @@ LoadingPage.propTypes = {
     message: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }).isRequired,
+  store: PropTypes.object.isRequired,
 };
 
 export default connect(state => ({

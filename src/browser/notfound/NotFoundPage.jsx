@@ -1,23 +1,16 @@
-import Helmet from 'react-helmet';
-import React, { PropTypes } from 'react';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import {
-   Card,
-   CardActions,
-   CardHeader,
-   CardTitle,
-   CardText,
-} from 'material-ui/Card';
-import Paper from 'material-ui/Paper';
 import { grey200 } from 'material-ui/styles/colors';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import Paper from 'material-ui/Paper';
+import React, { PropTypes } from 'react';
 
 const styles = {
   card: {
     backgroundColor: `${grey200}`,
     margin: '0 auto',
-    width: '512px',
-  }
+  },
 };
 
 const NotFoundPage = ({ msg }) => (

@@ -5,7 +5,6 @@ import { IndexRoute, Route } from 'react-router';
 import App from './app/App';
 import AuthPage from './auth/AuthPage';
 import BeerPage from './beer/BeerPage';
-import DashboardPage from './dashboard/DashboardPage';
 import EndpointPage from './endpoint/EndpointPage';
 import NotFoundPage from './notfound/NotFoundPage';
 import SignUpPage from './signup/SignUpPage';
@@ -26,8 +25,8 @@ export default function createRoutes(getState) {
 
   return (
     <Route component={App} path="/">
-      <IndexRoute component={DashboardPage} onEnter={requireAuth} />
-      <Route component={DashboardPage} onEnter={requireAuth} path="dashboard" />
+      <IndexRoute component={BeerPage} onEnter={requireAuth} />
+      <Route component={NotFoundPage} onEnter={requireAuth} path="dashboard" />
       <Route component={EndpointPage} onEnter={requireAuth} path="endpoint" />
       <Route component={AuthPage} path="login" />
       <Route component={BeerPage} path="beer" />
