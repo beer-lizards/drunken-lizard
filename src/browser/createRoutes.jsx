@@ -13,7 +13,6 @@ export default function createRoutes() {
     <Route component={App} path="/">
       <IndexRoute component={LoadingPage} />
       <Route component={LoadingPage} path="dashboard" />
-      <Route component={LoadingPage} path="endpoint" />
       <Route component={AuthPage} path="login" />
       <Route component={BeerPage} path="beer" />
       <Route component={SignUpPage} path="signup" />

@@ -15,7 +15,7 @@ const LoadingPage = ({ msg, store }) => (
   <Paper style={{ backgroundColor: `${grey200}` }} zDepth={0}>
     <Helmet title={msg.title} />
     <Header store={store} />
-    <Card style={{ backgroundColor: `${grey200}`, width: '512px', margin: '0 auto' }} zDepth={0}>
+    <Card style={{ backgroundColor: `${grey200}`, width: '200px', margin: '0 auto' }} zDepth={0}>
       <CardTitle>
         <h1>Loading</h1>
       </CardTitle>

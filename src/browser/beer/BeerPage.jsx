@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Beers from './Beers';
 import fetch from '../../common/components/fetch';
-import { fetchBeers, toggleShowAll } from '../../common/beers/actions';
+import { fetchBeers, toggleShowAll } from '../../common/beer/actions';
 
 const BeerPage = ({ msg, ...otherProps }) => (
   <div>
@@ -25,7 +25,7 @@ BeerPage.propTypes = {
 const fetchedBeerPage = fetch(fetchBeers)(BeerPage);
 
 export default connect(state => ({
-  beers: state.beers,
+  beer: state.beer,
   msg: {
     beer: state.intl.msg.beer,
   },

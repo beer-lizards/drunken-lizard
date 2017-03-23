@@ -1,19 +1,13 @@
-import { Record } from 'immutable';
-
 import messages from './messages';
 
-const InitialState = Record({
+const initialState = {
   availableLanguages: ['en'],
   msg: messages.en,
   selectedLanguage: 'en',
-});
-const initialState = new InitialState();
+};
 
-const revive = state => initialState
-  .set('selectedLanguage', state.selectedLanguage);
-
-export default function intlReducer(state = initialState) {
-  if (!(state instanceof InitialState)) return revive(state);
+export default function intlReducer(state = initialState, action) {
+  if (!action) return state;
 
   // TODO: Add SET_APP_LANGUAGE action.
 

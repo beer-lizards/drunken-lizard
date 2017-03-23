@@ -14,7 +14,7 @@ const styles = {
 };
 
 const NotFoundPage = ({ msg }) => (
-  <Paper style={{ backgroundColor: `${grey200}` }} zDepth={0}>
+  <Paper style={{ backgroundColor: `${grey200}`, width: '100%' }} zDepth={0}>
     <Helmet title={msg.title} />
     <Card
       style={styles.card}
