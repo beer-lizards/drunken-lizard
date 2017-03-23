@@ -5,7 +5,6 @@ import eslint from 'gulp-eslint';
 import fs from 'fs';
 import gulp from 'gulp';
 import gulpIf from 'gulp-if';
-import os from 'os';
 import path from 'path';
 import runSequence from 'run-sequence';
 import shell from 'gulp-shell';
@@ -71,7 +70,6 @@ gulp.task('test', (done) => {
 
 gulp.task('server-node', bg('node', './src/server'));
 gulp.task('server-hot', bg('node', './webpack/server'));
-// Shell fixes Windows este/issues/522, bg is still needed for server-hot.
 gulp.task('server-nodemon', shell.task(
   // Normalize makes path cross platform.
   path.normalize('node_modules/.bin/nodemon --ignore webpack-assets.json src/server'),

@@ -1,6 +1,6 @@
+import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
 
 import { openDrawer } from '../../common/app/actions';
 

@@ -1,10 +1,10 @@
 import { IntlProvider } from 'react-intl';
 import { persistStore } from 'redux-persist';
 import { Provider as Redux } from 'react-redux';
-import localforage from 'localforage';
-import React, { PropTypes } from 'react';
 import { Router } from 'react-router';
+import localforage from 'localforage';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React, { PropTypes } from 'react';
 
 import createRoutes from '../createRoutesWithAuth';
 import configureStorage from '../../common/configureStorage';
