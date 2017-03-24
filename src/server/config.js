@@ -21,6 +21,7 @@ const config = {
   isProduction,
   locales: ['en'],
   port: process.env.PORT || 8000,
+  secret: 'changeme',
   winkingLizard2017: {
     host: 'signin.viguest.com',
     port: 80,

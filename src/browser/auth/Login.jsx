@@ -8,9 +8,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
-import { fields } from '../../common/lib/redux-fields';
+// import { fields } from '../../common/lib/redux-fields';
 import { focusInvalidField } from '../../common/lib/validation';
 import * as authActions from '../../common/auth/actions';
+import * as session from '../../common/session/actions';
 
 const log = bunyan.createLogger({ name: 'lizard' });
 
@@ -108,12 +109,12 @@ class Login extends React.Component {
 
 }
 
-const login = fields(Login, {
-  path: 'auth',
-  fields: ['email', 'password'],
-});
+// const login = fields(Login, {
+//   path: 'auth',
+//   fields: ['email', 'password'],
+// });
 
 export default connect(state => ({
   auth: state.auth,
   msg: state.intl.msg.auth.form,
-}), { ...authActions, replace })(login);
+}), { ...authActions, replace })(Login);
