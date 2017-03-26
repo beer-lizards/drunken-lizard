@@ -8,6 +8,7 @@ import beer from './beer/reducer';
 import config from './config/reducer';
 import device from './device/reducer';
 import intl from './intl/reducer';
+import session from './session/reducer';
 import ui from './ui/reducer';
 import users from './users/reducer';
 import { reduxFields } from './lib/redux-fields';
@@ -43,6 +44,7 @@ const configureReducer = (initialState) => {
     intl,
     reduxFields,
     routing,
+    session,
     ui,
     users,
   });

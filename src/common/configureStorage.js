@@ -15,6 +15,7 @@ const transforms = [immutableTransform({
 })];
 const whitelist = [
   'authorization',
+  'session',
   'users',
 ];
 

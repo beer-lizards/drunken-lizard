@@ -117,6 +117,28 @@ export function fetchBeersConsumed({
 }
 
 /**
+ * Fetches a user by their email address.
+ */
+export function fetchUser({
+  db,
+  email,
+}) {
+  log.info('database - fetchUser - start');
+  return new Promise((resolve, reject) => {
+    db.drunken_lizard.user_account.findOne({
+      email,
+    }, (err, user) => {
+      if (err) {
+        log.info('database - fetchUser - error');
+        return reject(err);
+      }
+      log.info('database - fetchUser - success');
+      return resolve(user);
+    });
+  });
+}
+
+/**
  * Saves a single beer to the database.
  */
 export function saveBeer({
